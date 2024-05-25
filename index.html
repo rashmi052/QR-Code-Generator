@@ -1,9 +1,9 @@
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="X-UA-Compatible="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QR Code Generator</title>
     <style>
@@ -18,185 +18,116 @@
         }
 
         #grid {
-
             margin-left: 330px;
             margin-top: 100px;
-
         }
 
         #code {
-
-
             display: flex;
             justify-content: center;
             align-items: center;
             margin-left: 170px;
             height: 100vh;
-
         }
 
         #frame {
-
             display: flex;
         }
 
         #vertical-line {
             width: 2px;
-            /* Adjust the width of the line as needed */
             height: 70%;
-            /* Make the line as tall as the container */
             background-color: #000;
-            /* Change the background color to your desired color */
             position: absolute;
-            /* Position the line absolutely within its parent */
             margin-left: 680px;
             margin-top: 100px;
         }
 
         .bottom-text {
-    position: fixed; /* Position it relative to the viewport */
-    
-    right: 0;
-    bottom: 0; /* Place at the bottom of the viewport */
-    transform: translateX(-50%); /* Center text within the container */
-    text-align: center; /* Center text within the container */
-    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-    font-size: 20px;
-    
-}
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            transform: translateX(-50%);
+            text-align: center;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            font-size: 20px;
+        }
 
+        textarea {
+            background-image: none;
+            border: 1px solid #ccc;
+            color: inherit;
+            font: inherit;
+            margin: 0;
+            outline: 0;
+            padding: 3px;
+            transition: background-color 0.3s;
+        }
 
+        .no-resize {
+            resize: none;
+        }
 
-textarea {
-  background-image: none;
-  border: 0;
-  color: inherit;
-  font: inherit;
-  margin: 0;
-  outline: 0;
-  padding: 3px;
-  transition: background-color 0.3s;
-}
+        select {
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
 
-.no-resize {
-    resize: none;
-}
-
-select{
-
-    border: 0;
-    padding: 10px;
-}
-
-input{
-    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-font-size: 15px;
-    width: 90px;
-    height:40px;
-    padding: 4px;
-    background-color:rgb(100, 143, 100);
-    border: 0px;
-    border-radius: 2px;
-    
-}
-
-
-        
+        input {
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            font-size: 15px;
+            width: 90px;
+            height: 40px;
+            padding: 4px;
+            background-color: rgb(100, 143, 100);
+            border: 0px;
+            border-radius: 2px;
+        }
     </style>
 </head>
-
 <body>
     <script type="text/javascript">
         function genQR() {
-
-            var googleAPI = "https://chart.googleapis.com/chart?cht=qr&chs=";
+            var apiBase = "https://api.qrserver.com/v1/create-qr-code/?";
             var myimg = document.getElementById("img");
             var size = document.getElementById("sizes").value;
             var text = document.getElementById("text").value;
-
 
             if (text.trim() === "") {
                 alert("Please Enter Text");
                 return; // Exit the function if there's no text
             }
-            if (size == "100" && text !== "") {
 
-                myimg.src = googleAPI + "100x100" + "&chl=" + text;
-
-            }
-            else if (size == "150" && text !== "") {
-
-                myimg.src = googleAPI + "150x150" + "&chl=" + text;
-
-            }
-            else if (size == "200" && text !== "") {
-
-                myimg.src = googleAPI + "200x200" + "&chl=" + text;
-
-            }
-            else if (size == "250" && text !== "") {
-
-                myimg.src = googleAPI + "250x250" + "&chl=" + text;
-
-            }
-            else if (size == "300" && text !== "") {
-
-                myimg.src = googleAPI + "300x300" + "&chl=" + text;
-
-            }
-
-
-
+            var qrCodeUrl = apiBase + "size=" + size + "x" + size + "&data=" + encodeURIComponent(text);
+            console.log("QR Code URL:", qrCodeUrl); // Log the URL for debugging
+            myimg.src = qrCodeUrl;
         }
-
-
     </script>
 
-
-
-
-   
-        <div id="frame">
-            <div id="grid">
-
-                <h1>QR Code Generator</h1>
-
-                <p> Select size:</p>
-                <select id="sizes">
-                    <option value="100">100x100</option>
-                    <option value="150">150x150</option>
-                    <option value="200">200x200</option>
-                    <option value="250" selected>250x250</option>
-                    <option value="300">300x300</option>
-                </select>
-                <br><br>
-                <textarea placeholder="Enter your text/link" id="text" rows="8" cols="30" class="no-resize"></textarea>
-                <br><br>
-                <input type="submit" value="Generate" onclick="genQR()">
-
-
-
-
-            </div>
-            <div id="vertical-line"></div>
-
-            <div id="code">
-                <img src="" id="img">
-            </div>
-
-
-        
+    <div id="frame">
+        <div id="grid">
+            <h1>QR Code Generator</h1>
+            <p>Select size:</p>
+            <select id="sizes">
+                <option value="100">100x100</option>
+                <option value="150">150x150</option>
+                <option value="200">200x200</option>
+                <option value="250" selected>250x250</option>
+                <option value="300">300x300</option>
+            </select>
+            <br><br>
+            <textarea placeholder="Enter your text/link" id="text" rows="8" cols="30" class="no-resize"></textarea>
+            <br><br>
+            <input type="submit" value="Generate" onclick="genQR()">
+        </div>
+        <div id="vertical-line"></div>
+        <div id="code">
+            <img src="" id="img">
+        </div>
     </div>
-    
+
     <div class="bottom-text">
         <p>Developed by Rashmi Maurya @2023</p>
     </div>
-
-
-
-
-
-
 </body>
-
 </html>
